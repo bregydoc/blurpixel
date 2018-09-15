@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/disintegration/imaging"
 	"github.com/kataras/iris"
 	"image"
 	"net/http"
@@ -41,6 +42,9 @@ func main() {
 		}
 
 		imageSrc, filename, err := image.Decode(resp.Body)
+
+		imageSrc = imaging.Resize(imageSrc, 128, 128, imaging.NearestNeighbor)
+
 		if err != nil {
 			c.StatusCode(iris.StatusInternalServerError)
 			c.JSON(iris.Map{
