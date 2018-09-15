@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/disintegration/imaging"
 	"github.com/kataras/iris"
 	"image"
 	"net/http"
@@ -14,7 +13,6 @@ import (
 	"log"
 	"os"
 )
-
 
 func main() {
 	app := iris.New()
@@ -61,10 +59,9 @@ func main() {
 		result := processor.Process(imageSrc, defaultWidth, defaultHeight, defaultRadius, doneChannel)
 		<-doneChannel
 
-
 		var localFile *os.File
 
-		result = imaging.Resize(result, 128, 128, imaging.Lanczos)
+		//result = imaging.Resize(result, 128, 128, imaging.Lanczos)
 
 		switch contentType {
 		case "image/jpeg":
@@ -76,7 +73,6 @@ func main() {
 				})
 				return
 			}
-
 
 			err = jpeg.Encode(localFile, result, nil)
 			if err != nil {
@@ -98,7 +94,6 @@ func main() {
 			}
 			defer localFile.Close()
 
-
 			err = png.Encode(localFile, result)
 			if err != nil {
 				c.StatusCode(iris.StatusInternalServerError)
@@ -113,8 +108,6 @@ func main() {
 		}
 
 		defer localFile.Close()
-
-
 
 		err = c.SendFile(localFile.Name(), "blrpx_"+filename)
 		if err != nil {
@@ -131,10 +124,3 @@ func main() {
 	app.Run(iris.Addr(":4233"))
 
 }
-
-
-
-
-
-
-
